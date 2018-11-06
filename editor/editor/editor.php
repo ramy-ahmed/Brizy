@@ -198,6 +198,22 @@ class Brizy_Editor_Editor_Editor {
 					'updateMenuData'             => Brizy_Editor_API::AJAX_UPDATE_MENU_DATA,
 					'updateMenuItemData'         => Brizy_Editor_API::AJAX_UPDATE_MENU_ITEM_DATA,
 					'getRuleGroupList'           => Brizy_Admin_Templates::RULE_GROUP_LIST,
+					//'getDefaultForm'             => Brizy_Editor_Forms_Api::AJAX_GET_DEFAULT_FORM,
+
+					'getForm'    => Brizy_Editor_Forms_Api::AJAX_GET_FORM,
+					'createForm' => Brizy_Editor_Forms_Api::AJAX_CREATE_FORM,
+					'deleteForm' => Brizy_Editor_Forms_Api::AJAX_DELETE_FORM,
+					'submitForm' => Brizy_Editor_Forms_Api::AJAX_SUBMIT_FORM,
+
+					'getIntegration'          => Brizy_Editor_Forms_Api::AJAX_GET_INTEGRATION,
+					'createIntegration'       => Brizy_Editor_Forms_Api::AJAX_CREATE_INTEGRATION,
+					'updateIntegration'       => Brizy_Editor_Forms_Api::AJAX_UPDATE_INTEGRATION,
+					'deleteIntegration'       => Brizy_Editor_Forms_Api::AJAX_DELETE_INTEGRATION,
+					'authenticateIntegration' => Brizy_Editor_Forms_Api::AJAX_AUTHENTICATE_INTEGRATION,
+
+					'getIntegrationLists'  => Brizy_Editor_Forms_Api::AJAX_GET_LISTS,
+					'getIntegrationFields' => Brizy_Editor_Forms_Api::AJAX_GET_FIELDS,
+
 				),
 				'plugins'         => array(
 					'dummy'       => true,
@@ -210,9 +226,6 @@ class Brizy_Editor_Editor_Editor {
 			),
 			'applications'    => array(
 				'form' => array(
-					'iframeUrl' => $this->urlBuilder->application_form_url(),
-					'apiUrl'    => Brizy_Config::BRIZY_APPLICATION_INTEGRATION_URL,
-					'wpApiUrl'  => set_url_scheme( admin_url( 'admin-ajax.php' ) ),
 					'submitUrl' => add_query_arg( 'action', 'brizy_submit_form', set_url_scheme( admin_url( 'admin-ajax.php' ) ) )
 				)
 			),

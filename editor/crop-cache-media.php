@@ -57,7 +57,7 @@ class Brizy_Editor_CropCacheMedia extends Brizy_Editor_Asset_StaticFile {
 
 		if ( ! ( $attachmentId = $this->getAttachmentByMediaName( $madia_name ) ) ) {
 
-			$original_asset_path = $this->url_builder->upload_path( $this->url_builder->page_asset_path( "images/" . $madia_name ) );
+			$original_asset_path =  $this->url_builder->page_upload_path( "assets/images/" . $madia_name ) ;
 
 			if ( ! file_exists( $original_asset_path ) ) {
 				// I assume that the media was already attached.

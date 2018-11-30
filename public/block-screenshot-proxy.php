@@ -33,7 +33,7 @@ class Brizy_Public_BlockScreenshotProxy extends Brizy_Public_AbstractProxy {
 		$types = array( 'normal', 'global', 'saved' );
 
 		$noCacheHeaders = array(
-			'Cache-Control' => 'no-cache, no-store'
+			'Cache-Control' => 'max-age=600'
 		);
 
 		foreach ( $types as $type ) {

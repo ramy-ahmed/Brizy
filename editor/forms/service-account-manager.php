@@ -40,8 +40,9 @@ class Brizy_Editor_Forms_ServiceAccountManager {
 	 */
 	public function getAccounts( $service ) {
 
-		if($this->accounts[ $service ])
-			return $this->accounts[ $service ];
+		if ( $this->accounts[ $service ] ) {
+			return array_values( $this->accounts[ $service ] );
+		}
 
 		return array();
 	}
@@ -99,7 +100,7 @@ class Brizy_Editor_Forms_ServiceAccountManager {
 	 * @throws Brizy_Editor_Exceptions_NotFound
 	 */
 	private function loadAccounts( Brizy_Editor_Project $project ) {
-		foreach ( (array)$project->getMetaValue( 'accounts' ) as $service => $account ) {
+		foreach ( (array) $project->getMetaValue( 'accounts' ) as $service => $account ) {
 			$this->addAccount( $service, Brizy_Editor_Forms_Account::createFromSerializedData( $account ) );
 		}
 	}

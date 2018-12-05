@@ -83,6 +83,8 @@ abstract class Brizy_Editor_Forms_AbstractIntegration extends Brizy_Admin_Serial
 			$instance->setId( $json_obj->id );
 			$instance->setCompleted( $json_obj->completed );
 		}
+
+		return $instance;
 	}
 
 

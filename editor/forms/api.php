@@ -296,7 +296,7 @@ class Brizy_Editor_Forms_Api {
 		$integration = $form->getIntegration( $integrationId );
 
 		if ( $integration instanceof Brizy_Editor_Forms_ServiceIntegration ) {
-			$integration->getAccounts( $accountManager->getAccounts( $integrationId ) );
+			$integration->setAccounts( $accountManager->getAccounts( $integrationId ) );
 		}
 
 		if ( $integration ) {

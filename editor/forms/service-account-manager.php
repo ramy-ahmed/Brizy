@@ -39,7 +39,11 @@ class Brizy_Editor_Forms_ServiceAccountManager {
 	 * @return Brizy_Editor_Forms_Account|null
 	 */
 	public function getAccounts( $service ) {
-		return $this->accounts[ $service ];
+
+		if($this->accounts[ $service ])
+			return $this->accounts[ $service ];
+
+		return array();
 	}
 
 	/**

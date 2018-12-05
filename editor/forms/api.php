@@ -431,8 +431,6 @@ class Brizy_Editor_Forms_Api {
 			$this->error( 400, "Duplicate account" );
 		}
 
-		$accountManager->addAccount( $integration->getId(), $account );
-
 		try {
 			// initialize an instance of AuthenticationData
 			$authData = new \BrizyForms\Model\AuthenticationData( $account->convertToAuthData() );
@@ -449,6 +447,7 @@ class Brizy_Editor_Forms_Api {
 			if ( $response->getCode() == 200 ) {
 				if ( $form->updateIntegration( $integration ) ) {
 					$manager->addForm( $form );
+					$accountManager->addAccount( $integration->getId(), $account );
 					$this->success( $account );
 				}
 			} else {

@@ -59,10 +59,32 @@ class Brizy_Editor_Forms_ServiceAccountManager {
 
 	/**
 	 * @param $service
+	 * @param Brizy_Editor_Forms_Account $anAccount
+	 *
+	 * @return bool
+	 */
+	public function hasAccount( $service, Brizy_Editor_Forms_Account $anAccount ) {
+		foreach ( $this->getAccounts( $service ) as $account ) {
+			if ( $anAccount->isEqual( $account ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * @param $service
 	 * @param Brizy_Editor_Forms_Account $account
 	 */
 	public function addAccount( $service, Brizy_Editor_Forms_Account $account ) {
+
+		if ( $this->hasAccount( $service, $account ) ) {
+			return;
+		}
+
 		$this->accounts[ $service ][ $account->getId() ] = $account;
+
 
 		$this->updateStorage();
 	}
@@ -96,7 +118,7 @@ class Brizy_Editor_Forms_ServiceAccountManager {
 
 		foreach ( $this->accounts as $service => $accounts ) {
 			foreach ( $accounts as $account ) {
-				$data[$service][] = $account->convertToOptionValue();
+				$data[ $service ][] = $account->convertToOptionValue();
 			}
 		}
 

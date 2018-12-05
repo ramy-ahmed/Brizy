@@ -427,7 +427,7 @@ class Brizy_Editor_Forms_Api {
 		$account = new Brizy_Editor_Forms_Account();
 		$account->setData( get_object_vars( $data ) );
 
-		if ( $accountManager->getAccount( $integration->getId(), $account ) ) {
+		if ( $accountManager->hasAccount( $integration->getId(), $account ) ) {
 			$this->error( 400, "Duplicate account" );
 		}
 

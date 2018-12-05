@@ -310,8 +310,10 @@ class Brizy_Editor_Forms_Api {
 
 		$this->authorize();
 
-		$manager = new Brizy_Editor_Forms_FormManager( Brizy_Editor_Project::get() );
-		$form    = $manager->getForm( $_REQUEST['formId'] );
+		$manager        = new Brizy_Editor_Forms_FormManager( Brizy_Editor_Project::get() );
+		$accountManager = new Brizy_Editor_Forms_ServiceAccountManager( Brizy_Editor_Project::get() );
+
+		$form = $manager->getForm( $_REQUEST['formId'] );
 		if ( ! $form ) {
 			$this->error( 400, "Invalid form id" );
 		}
@@ -325,6 +327,8 @@ class Brizy_Editor_Forms_Api {
 			if ( ! $oldIntegration ) {
 				$this->error( 404, "Integration not found" );
 			}
+
+			$integration->setAccounts( $accountManager->getAccounts( $integration->getId() ) );
 
 			// reset fields and lists if the account is changed
 			if ( $oldIntegration->getUsedAccount() != $integration->getUsedAccount() ) {

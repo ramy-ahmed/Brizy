@@ -6,7 +6,7 @@
  * Time: 10:59 AM
  */
 
-class Brizy_Editor_Forms_Manager {
+class Brizy_Editor_Forms_FormManager {
 
 	/**
 	 * @var Brizy_Editor_Project

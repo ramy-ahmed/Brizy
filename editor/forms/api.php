@@ -8,12 +8,13 @@
 
 class Brizy_Editor_Forms_Api {
 
-	//const AJAX_GET_DEFAULT_FORM = 'brizy_default_form';
 	const AJAX_GET_FORM = 'brizy_get_form';
 	const AJAX_CREATE_FORM = 'brizy_create_form';
 	const AJAX_DELETE_FORM = 'brizy_delete_form';
-	//const AJAX_FORM_INTEGRATION_STATUS = 'brizy_form_integration_status';
 	const AJAX_SUBMIT_FORM = 'brizy_submit_form';
+
+	const AJAX_GET_SERVICE_ACCOUNTS = 'brizy_service_accounts';
+	const AJAX_DELETE_SERVICE_ACCOUNT = 'brizy_delete_service_account';
 
 	const AJAX_GET_INTEGRATION = 'brizy_get_integration';
 	const AJAX_CREATE_INTEGRATION = 'brizy_create_integration';
@@ -64,43 +65,17 @@ class Brizy_Editor_Forms_Api {
 		$this->initialize();
 	}
 
-	protected function error( $code, $message ) {
-		wp_send_json_error( array( 'code' => $code, 'message' => $message ), $code );
-	}
-
-	protected function success( $data ) {
-		wp_send_json_success( $data );
-	}
-
-	private function authorize() {
-		if ( ! wp_verify_nonce( $_REQUEST['hash'], Brizy_Editor_API::nonce ) ) {
-			wp_send_json_error( array( 'code' => 400, 'message' => 'Bad request' ), 400 );
-		}
-	}
-
-//	private function generateCallback( $formId, $service ) {
-//		$params = array(
-//			'action'  => self::AJAX_AUTHENTICATION_CALLBACK,
-//			'formId'  => $formId,
-//			'service' => $service
-//
-//		);
-//
-//		return set_url_scheme( admin_url( 'admin-ajax.php' ) ) . '?' . http_build_query( $params );
-//	}
-
-
 	private function initialize() {
 
 		if ( Brizy_Editor::is_user_allowed() ) {
-			//add_action( 'wp_ajax_' . self::AJAX_GET_DEFAULT_FORM, array( $this, 'default_form' ) );
 			add_action( 'wp_ajax_' . self::AJAX_GET_FORM, array( $this, 'get_form' ) );
 			add_action( 'wp_ajax_' . self::AJAX_CREATE_FORM, array( $this, 'create_form' ) );
-//			add_action( 'wp_ajax_' . self::AJAX_FORM_INTEGRATION_STATUS, array(
-//				$this,
-//				'update_form_integration_status'
-//			) );
 			add_action( 'wp_ajax_' . self::AJAX_DELETE_FORM, array( $this, 'delete_form' ) );
+
+			add_action( 'wp_ajax_' . self::AJAX_GET_SERVICE_ACCOUNTS, array( $this, 'getServiceAccountList' ) );
+			add_action( 'wp_ajax_' . self::AJAX_DELETE_SERVICE_ACCOUNT, array( $this, 'deleteServiceAccountList' ) );
+
+
 			add_action( 'wp_ajax_' . self::AJAX_CREATE_INTEGRATION, array( $this, 'createIntegration' ) );
 			add_action( 'wp_ajax_' . self::AJAX_GET_INTEGRATION, array( $this, 'getIntegration' ) );
 			add_action( 'wp_ajax_' . self::AJAX_UPDATE_INTEGRATION, array( $this, 'updateIntegration' ) );
@@ -116,26 +91,25 @@ class Brizy_Editor_Forms_Api {
 		//add_action( 'wp_ajax_nopriv_' . self::AJAX_AUTHENTICATION_CALLBACK, array( $this, 'authenticationCallback' ) );
 	}
 
-//	public function default_form() {
-//		try {
-//			$this->authorize();
-//			$current_user = wp_get_current_user();
-//			$form         = new Brizy_Editor_Forms_Form();
-//			$form->setEmailTo( $current_user->user_email );
-//			$this->success( $form );
-//
-//		} catch ( Exception $exception ) {
-//			Brizy_Logger::instance()->exception( $exception );
-//			$this->error( $exception->getCode(), $exception->getMessage() );
-//			exit;
-//		}
-//	}
+	protected function error( $code, $message ) {
+		wp_send_json_error( array( 'code' => $code, 'message' => $message ), $code );
+	}
+
+	protected function success( $data ) {
+		wp_send_json_success( $data );
+	}
+
+	private function authorize() {
+		if ( ! wp_verify_nonce( $_REQUEST['hash'], Brizy_Editor_API::nonce ) ) {
+			wp_send_json_error( array( 'code' => 400, 'message' => 'Bad request' ), 400 );
+		}
+	}
 
 	public function get_form() {
 		try {
 			$this->authorize();
 
-			$manager = new Brizy_Editor_Forms_Manager( Brizy_Editor_Project::get() );
+			$manager = new Brizy_Editor_Forms_FormManager( Brizy_Editor_Project::get() );
 
 			$form = $manager->getForm( $_REQUEST['formId'] );
 
@@ -156,7 +130,7 @@ class Brizy_Editor_Forms_Api {
 		try {
 			$this->authorize();
 
-			$manager           = new Brizy_Editor_Forms_Manager( Brizy_Editor_Project::get() );
+			$manager           = new Brizy_Editor_Forms_FormManager( Brizy_Editor_Project::get() );
 			$instance          = Brizy_Editor_Forms_Form::createFromJson( json_decode( file_get_contents( 'php://input' ) ) );
 			$validation_result = $instance->validate();
 
@@ -177,7 +151,7 @@ class Brizy_Editor_Forms_Api {
 	public function delete_form() {
 		try {
 			$this->authorize();
-			$manager = new Brizy_Editor_Forms_Manager( Brizy_Editor_Project::get() );
+			$manager = new Brizy_Editor_Forms_FormManager( Brizy_Editor_Project::get() );
 			$manager->deleteFormById( $_REQUEST['formId'] );
 			$this->success( array() );
 		} catch ( Exception $exception ) {
@@ -189,7 +163,8 @@ class Brizy_Editor_Forms_Api {
 
 	public function submit_form() {
 		try {
-			$manager = new Brizy_Editor_Forms_Manager( Brizy_Editor_Project::get() );
+			$manager        = new Brizy_Editor_Forms_FormManager( Brizy_Editor_Project::get() );
+			$accountManager = new Brizy_Editor_Forms_ServiceAccountManager( Brizy_Editor_Project::get() );
 			/**
 			 * @var Brizy_Editor_FormsCompatibility fix_Form $form ;
 			 */
@@ -250,7 +225,7 @@ class Brizy_Editor_Forms_Api {
 
 					} else {
 						// initialize an instance of AuthenticationData
-						$account = $integration->getUsedAccountObject();
+						$account = $accountManager->getAccount( $integration->getId(), $integration->getUsedAccount() );
 
 						$authData = new \BrizyForms\Model\AuthenticationData( $account->convertToOptionValue() );
 						$service->setAuthenticationData( $authData );
@@ -281,7 +256,7 @@ class Brizy_Editor_Forms_Api {
 
 	public function createIntegration() {
 		$this->authorize();
-		$manager = new Brizy_Editor_Forms_Manager( Brizy_Editor_Project::get() );
+		$manager = new Brizy_Editor_Forms_FormManager( Brizy_Editor_Project::get() );
 		$form    = $manager->getForm( $_REQUEST['formId'] );
 
 		if ( ! $form ) {
@@ -306,8 +281,10 @@ class Brizy_Editor_Forms_Api {
 
 		$this->authorize();
 
-		$manager = new Brizy_Editor_Forms_Manager( Brizy_Editor_Project::get() );
-		$form    = $manager->getForm( $_REQUEST['formId'] );
+		$manager        = new Brizy_Editor_Forms_FormManager( Brizy_Editor_Project::get() );
+		$accountManager = new Brizy_Editor_Forms_ServiceAccountManager( Brizy_Editor_Project::get() );
+
+		$form = $manager->getForm( $_REQUEST['formId'] );
 		if ( ! $form ) {
 			$this->error( 400, "Invalid form id" );
 		}
@@ -317,6 +294,10 @@ class Brizy_Editor_Forms_Api {
 		}
 
 		$integration = $form->getIntegration( $integrationId );
+
+		if ( $integration instanceof Brizy_Editor_Forms_ServiceIntegration ) {
+			$integration->getAccounts( $accountManager->getAccounts( $integrationId ) );
+		}
 
 		if ( $integration ) {
 			$this->success( $integration );
@@ -329,7 +310,7 @@ class Brizy_Editor_Forms_Api {
 
 		$this->authorize();
 
-		$manager = new Brizy_Editor_Forms_Manager( Brizy_Editor_Project::get() );
+		$manager = new Brizy_Editor_Forms_FormManager( Brizy_Editor_Project::get() );
 		$form    = $manager->getForm( $_REQUEST['formId'] );
 		if ( ! $form ) {
 			$this->error( 400, "Invalid form id" );
@@ -351,14 +332,14 @@ class Brizy_Editor_Forms_Api {
 				$integration->setFields( array() );
 				$integration->setUsedList( null );
 				$integration->setFieldsMap( array() );
-				$integration->setCompleted(false);
+				$integration->setCompleted( false );
 			}
 
 			// reset fields and fieldsmap if the used list is changed
 			if ( $oldIntegration->getUsedList() != $integration->getUsedList() ) {
 				$integration->setFields( array() );
 				$integration->setFieldsMap( array() );
-				$integration->setCompleted(false);
+				$integration->setCompleted( false );
 			}
 		}
 
@@ -376,7 +357,7 @@ class Brizy_Editor_Forms_Api {
 
 		$this->authorize();
 
-		$manager = new Brizy_Editor_Forms_Manager( Brizy_Editor_Project::get() );
+		$manager = new Brizy_Editor_Forms_FormManager( Brizy_Editor_Project::get() );
 		$form    = $manager->getForm( $_REQUEST['formId'] );
 		if ( ! $form ) {
 			$this->error( 400, "Invalid form id" );
@@ -399,8 +380,10 @@ class Brizy_Editor_Forms_Api {
 
 	public function authenticateIntegration() {
 
-		$manager = new Brizy_Editor_Forms_Manager( Brizy_Editor_Project::get() );
-		$form    = $manager->getForm( $_REQUEST['formId'] );
+		$manager        = new Brizy_Editor_Forms_FormManager( Brizy_Editor_Project::get() );
+		$accountManager = new Brizy_Editor_Forms_ServiceAccountManager( Brizy_Editor_Project::get() );
+
+		$form = $manager->getForm( $_REQUEST['formId'] );
 		if ( ! $form ) {
 			$this->error( 404, "Form not found" );
 		}
@@ -435,11 +418,11 @@ class Brizy_Editor_Forms_Api {
 		$account = new Brizy_Editor_Forms_Account();
 		$account->setData( get_object_vars( $data ) );
 
-		if ( $integration->hasAccount( $account ) ) {
+		if ( $accountManager->getAccount( $integration->getId(), $account ) ) {
 			$this->error( 400, "Duplicate account" );
 		}
 
-		$integration->addAccount( $account );
+		$accountManager->addAccount( $integration->getId(), $account );
 
 		try {
 			// initialize an instance of AuthenticationData
@@ -471,8 +454,9 @@ class Brizy_Editor_Forms_Api {
 
 		$this->authorize();
 
-		$manager = new Brizy_Editor_Forms_Manager( Brizy_Editor_Project::get() );
-		$form    = $manager->getForm( $_REQUEST['formId'] );
+		$manager        = new Brizy_Editor_Forms_FormManager( Brizy_Editor_Project::get() );
+		$accountManager = new Brizy_Editor_Forms_ServiceAccountManager( Brizy_Editor_Project::get() );
+		$form           = $manager->getForm( $_REQUEST['formId'] );
 		if ( ! $form ) {
 			$this->error( 400, "Invalid form id" );
 		}
@@ -510,7 +494,7 @@ class Brizy_Editor_Forms_Api {
 			}
 
 			// initialize an instance of AuthenticationData
-			$account = $integration->getUsedAccountObject();
+			$account = $accountManager->getAccount( $integration->getId(), $integration->getUsedAccount() );
 
 			$authData = new \BrizyForms\Model\AuthenticationData( $account->convertToAuthData() );
 
@@ -540,8 +524,9 @@ class Brizy_Editor_Forms_Api {
 
 		$this->authorize();
 
-		$manager = new Brizy_Editor_Forms_Manager( Brizy_Editor_Project::get() );
-		$form    = $manager->getForm( $_REQUEST['formId'] );
+		$manager        = new Brizy_Editor_Forms_FormManager( Brizy_Editor_Project::get() );
+		$accountManager = new Brizy_Editor_Forms_ServiceAccountManager( Brizy_Editor_Project::get() );
+		$form           = $manager->getForm( $_REQUEST['formId'] );
 		if ( ! $form ) {
 			$this->error( 400, "Invalid form id" );
 		}
@@ -575,7 +560,7 @@ class Brizy_Editor_Forms_Api {
 			}
 
 			// initialize an instance of AuthenticationData
-			$account = $integration->getUsedAccountObject();
+			$account = $accountManager->getAccount( $integration->getId(), $integration->getusedAccount() );
 
 			$authData = new \BrizyForms\Model\AuthenticationData( $account->convertToOptionValue() );
 			$service->setAuthenticationData( $authData );
@@ -608,18 +593,41 @@ class Brizy_Editor_Forms_Api {
 		}
 	}
 
-	/*public function authenticationCallback() {
+	public function getServiceAccountList() {
 
-		$manager = new Brizy_Editor_Forms_Manager( Brizy_Editor_Project::get() );
-		$form    = $manager->getForm( $_REQUEST['formId'] );
-		if ( ! $form ) {
-			$this->error( 400, "Invalid form id" );
-		}
+		$this->authorize();
+
+		$manager = new Brizy_Editor_Forms_ServiceAccountManager( Brizy_Editor_Project::get() );
+
 		$serviceId = $_REQUEST['service'];
 		if ( ! $serviceId ) {
-			$this->error( 400, "Invalid service" );
+			$this->error( 400, "Invalid form service id" );
 		}
 
-		$this->error( 501, 'Not implemented' );
-	}*/
+		$accounts = $manager->getAccounts( $serviceId );
+
+		$this->success( $accounts );
+	}
+
+	public function deleteServiceAccountList() {
+
+		$this->authorize();
+
+		$manager = new Brizy_Editor_Forms_ServiceAccountManager( Brizy_Editor_Project::get() );
+
+		$serviceId = $_REQUEST['service'];
+		if ( ! $serviceId ) {
+			$this->error( 400, "Invalid form service id" );
+		}
+
+		$accountId = $_REQUEST['account'];
+		if ( ! $accountId ) {
+			$this->error( 400, "Invalid account id" );
+		}
+
+		$manager->deleteAccountById( $serviceId, $accountId );
+
+		$this->success( null );
+	}
+
 }

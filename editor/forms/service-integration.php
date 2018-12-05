@@ -48,12 +48,12 @@ class Brizy_Editor_Forms_ServiceIntegration extends Brizy_Editor_Forms_AbstractI
 
 		$get_object_vars = parent::jsonSerialize();
 
-		$get_object_vars['accounts']    = $this->getAccounts();
 		$get_object_vars['fields']      = $this->getFields();
 		$get_object_vars['lists']       = $this->getLists();
 		$get_object_vars['usedAccount'] = $this->getUsedAccount();
 		$get_object_vars['usedList']    = $this->getUsedList();
 		$get_object_vars['fieldsMap']   = $this->getFieldsMap();
+		$get_object_vars['accounts']   = $this->getAccounts();
 
 		return $get_object_vars;
 	}
@@ -63,11 +63,6 @@ class Brizy_Editor_Forms_ServiceIntegration extends Brizy_Editor_Forms_AbstractI
 		if ( is_object( $json_obj ) ) {
 			$instance = new self( $json_obj->id );
 
-			if ( isset( $json_obj->accounts ) ) {
-				foreach ( $json_obj->accounts as $account ) {
-					$instance->addAccount( Brizy_Editor_Forms_Account::createFromJson( $account ) );
-				}
-			}
 			if ( isset( $json_obj->fields ) ) {
 				foreach ( $json_obj->fields as $field ) {
 					$instance->addField( Brizy_Editor_Forms_Field::createFromJson( $field ) );
@@ -93,26 +88,6 @@ class Brizy_Editor_Forms_ServiceIntegration extends Brizy_Editor_Forms_AbstractI
 	}
 
 
-	/**
-	 * @return array
-	 */
-	public function getAccounts() {
-		return $this->accounts;
-	}
-
-	public function addAccount( Brizy_Editor_Forms_Account $account ) {
-		$this->accounts[] = $account;
-	}
-
-	public function hasAccount( Brizy_Editor_Forms_Account $anAccount ) {
-		foreach ( $this->accounts as $account ) {
-			if ( $account->isEqual( $anAccount ) ) {
-				return true;
-			}
-		}
-
-		return false;
-	}
 
 	public function addList( Brizy_Editor_Forms_Group $list ) {
 		$this->lists[] = $list;
@@ -122,16 +97,6 @@ class Brizy_Editor_Forms_ServiceIntegration extends Brizy_Editor_Forms_AbstractI
 		$this->fields[] = $field;
 	}
 
-	/**
-	 * @param array $accounts
-	 *
-	 * @return self
-	 */
-	public function setAccounts( $accounts ) {
-		$this->accounts = $accounts;
-
-		return $this;
-	}
 
 	/**
 	 * @return array
@@ -177,20 +142,16 @@ class Brizy_Editor_Forms_ServiceIntegration extends Brizy_Editor_Forms_AbstractI
 	}
 
 	/**
-	 * @return mixed
+	 * @param mixed $usedAccount
+	 *
+	 * @return self
 	 */
-	public function getUsedAccountObject() {
+	public function setUsedAccount( $usedAccount ) {
+		$this->usedAccount = $usedAccount;
 
-		foreach ( (array) $this->accounts as $account ) {
-			$var          = $account->getId();
-			$used_account = $this->getUsedAccount();
-			if ( $var == $used_account ) {
-				return $account;
-			}
-		}
-
-		return array();
+		return $this;
 	}
+
 
 	/**
 	 * @return mixed
@@ -206,17 +167,6 @@ class Brizy_Editor_Forms_ServiceIntegration extends Brizy_Editor_Forms_AbstractI
 		}
 
 		return array();
-	}
-
-	/**
-	 * @param mixed $usedAccount
-	 *
-	 * @return self
-	 */
-	public function setUsedAccount( $usedAccount ) {
-		$this->usedAccount = $usedAccount;
-
-		return $this;
 	}
 
 	/**
@@ -251,6 +201,24 @@ class Brizy_Editor_Forms_ServiceIntegration extends Brizy_Editor_Forms_AbstractI
 	 */
 	public function setFieldsMap( $fieldsMap ) {
 		$this->fieldsMap = $fieldsMap;
+
+		return $this;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getAccounts() {
+		return $this->accounts;
+	}
+
+	/**
+	 * @param array $accounts
+	 *
+	 * @return Brizy_Editor_Forms_ServiceIntegration
+	 */
+	public function setAccounts( $accounts ) {
+		$this->accounts = $accounts;
 
 		return $this;
 	}

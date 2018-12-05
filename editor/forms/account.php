@@ -16,6 +16,7 @@ class Brizy_Editor_Forms_Account extends Brizy_Admin_Serializable {
 	 * @param null $data
 	 */
 	public function __construct( $data = null ) {
+
 		if ( ! is_array( $data ) ) {
 			$this->data = array( 'id' => md5( time() . rand( 0, 10000 ) ) );
 		} else {
@@ -26,7 +27,9 @@ class Brizy_Editor_Forms_Account extends Brizy_Admin_Serializable {
 	public function isEqual( self $account ) {
 		$aData = $account->convertToOptionValue();
 		foreach ( $this->data as $key => $val ) {
-			if($key=='id') continue;
+			if ( $key == 'id' ) {
+				continue;
+			}
 			if ( $aData[ $key ] != $val ) {
 				return false;
 			}

@@ -205,6 +205,9 @@ class Brizy_Editor_Editor_Editor {
 					'deleteForm' => Brizy_Editor_Forms_Api::AJAX_DELETE_FORM,
 					'submitForm' => Brizy_Editor_Forms_Api::AJAX_SUBMIT_FORM,
 
+					'getServiceAccounts'   => Brizy_Editor_Forms_Api::AJAX_GET_SERVICE_ACCOUNTS,
+					'deleteServiceAccount' => Brizy_Editor_Forms_Api::AJAX_DELETE_SERVICE_ACCOUNT,
+
 					'getIntegration'          => Brizy_Editor_Forms_Api::AJAX_GET_INTEGRATION,
 					'createIntegration'       => Brizy_Editor_Forms_Api::AJAX_CREATE_INTEGRATION,
 					'updateIntegration'       => Brizy_Editor_Forms_Api::AJAX_UPDATE_INTEGRATION,

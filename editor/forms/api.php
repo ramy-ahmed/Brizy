@@ -73,7 +73,7 @@ class Brizy_Editor_Forms_Api {
 			add_action( 'wp_ajax_' . self::AJAX_DELETE_FORM, array( $this, 'delete_form' ) );
 
 			add_action( 'wp_ajax_' . self::AJAX_GET_SERVICE_ACCOUNTS, array( $this, 'getServiceAccountList' ) );
-			add_action( 'wp_ajax_' . self::AJAX_DELETE_SERVICE_ACCOUNT, array( $this, 'deleteServiceAccountList' ) );
+			add_action( 'wp_ajax_' . self::AJAX_DELETE_SERVICE_ACCOUNT, array( $this, 'deleteServiceAccount' ) );
 
 
 			add_action( 'wp_ajax_' . self::AJAX_CREATE_INTEGRATION, array( $this, 'createIntegration' ) );
@@ -88,7 +88,6 @@ class Brizy_Editor_Forms_Api {
 
 		add_action( 'wp_ajax_' . self::AJAX_SUBMIT_FORM, array( $this, 'submit_form' ) );
 		add_action( 'wp_ajax_nopriv_' . self::AJAX_SUBMIT_FORM, array( $this, 'submit_form' ) );
-		//add_action( 'wp_ajax_nopriv_' . self::AJAX_AUTHENTICATION_CALLBACK, array( $this, 'authenticationCallback' ) );
 	}
 
 	protected function error( $code, $message ) {
@@ -617,7 +616,7 @@ class Brizy_Editor_Forms_Api {
 		$this->success( $accounts );
 	}
 
-	public function deleteServiceAccountList() {
+	public function deleteServiceAccount() {
 
 		$this->authorize();
 

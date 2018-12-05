@@ -257,6 +257,7 @@ class Brizy_Editor_Forms_Api {
 	public function createIntegration() {
 		$this->authorize();
 		$manager = new Brizy_Editor_Forms_FormManager( Brizy_Editor_Project::get() );
+		$accountManager = new Brizy_Editor_Forms_ServiceAccountManager( Brizy_Editor_Project::get() );
 		$form    = $manager->getForm( $_REQUEST['formId'] );
 
 		if ( ! $form ) {
@@ -267,6 +268,10 @@ class Brizy_Editor_Forms_Api {
 
 		if ( $form->getIntegration( $integration->getid() ) ) {
 			$this->error( 400, "This integration is already created" );
+		}
+
+		if ( $integration instanceof Brizy_Editor_Forms_ServiceIntegration ) {
+			$integration->setAccounts( $accountManager->getAccounts(  $integration->getid() ) );
 		}
 
 		if ( $form->addIntegration( $integration ) ) {

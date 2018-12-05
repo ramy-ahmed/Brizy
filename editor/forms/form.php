@@ -106,12 +106,14 @@ class Brizy_Editor_Forms_Form extends Brizy_Admin_Serializable {
 
 		if ( is_object( $json_obj ) ) {
 
+			$instance->setId( $json_obj->id );
+
+
+			// add uncompleted wordpress integration
 			$current_user   = wp_get_current_user();
 			$an_integration = new Brizy_Editor_Forms_WordpressIntegration();
 			$an_integration->setEmailTo( $current_user->user_email );
 
-
-			$instance->setId( $json_obj->id );
 			$instance->addIntegration( $an_integration );
 
 			foreach ( (array)$json_obj->integrations as $integration ) {

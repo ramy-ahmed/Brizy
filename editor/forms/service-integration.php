@@ -53,9 +53,19 @@ class Brizy_Editor_Forms_ServiceIntegration extends Brizy_Editor_Forms_AbstractI
 		$get_object_vars['usedAccount'] = $this->getUsedAccount();
 		$get_object_vars['usedList']    = $this->getUsedList();
 		$get_object_vars['fieldsMap']   = $this->getFieldsMap();
-		$get_object_vars['accounts']   = $this->getAccounts();
+		$get_object_vars['accounts']    = $this->getAccounts();
 
 		return $get_object_vars;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function serialize() {
+		$value = $this->jsonSerialize();
+		unset( $value['accounts'] );
+
+		return serialize( $value );
 	}
 
 	public static function createFromJson( $json_obj ) {
@@ -86,7 +96,6 @@ class Brizy_Editor_Forms_ServiceIntegration extends Brizy_Editor_Forms_AbstractI
 
 		return $instance;
 	}
-
 
 
 	public function addList( Brizy_Editor_Forms_Group $list ) {

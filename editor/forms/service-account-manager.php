@@ -91,7 +91,16 @@ class Brizy_Editor_Forms_ServiceAccountManager {
 	 *
 	 */
 	private function updateStorage() {
-		$this->project->setMetaValue( 'accounts', $this->accounts );
+
+		$data = array();
+
+		foreach ( $this->accounts as $service => $accounts ) {
+			foreach ( $accounts as $account ) {
+				$data[$service][] = $account->convertToOptionValue();
+			}
+		}
+
+		$this->project->setMetaValue( 'accounts', $data );
 	}
 
 	/**
@@ -100,8 +109,17 @@ class Brizy_Editor_Forms_ServiceAccountManager {
 	 * @throws Brizy_Editor_Exceptions_NotFound
 	 */
 	private function loadAccounts( Brizy_Editor_Project $project ) {
-		foreach ( (array) $project->getMetaValue( 'accounts' ) as $service => $account ) {
-			$this->addAccount( $service, Brizy_Editor_Forms_Account::createFromSerializedData( $account ) );
+
+		//$this->project->setMetaValue( 'accounts', [] );
+		$meta_value = $project->getMetaValue( 'accounts' );
+
+		if ( is_array( $meta_value ) ) {
+			foreach ( $meta_value as $service => $accounts ) {
+				foreach ( $accounts as $account ) {
+					$account1 = Brizy_Editor_Forms_Account::createFromSerializedData( $account );
+					$this->addAccount( $service, $account1 );
+				}
+			}
 		}
 	}
 }

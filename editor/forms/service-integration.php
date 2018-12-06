@@ -12,17 +12,17 @@ class Brizy_Editor_Forms_ServiceIntegration extends Brizy_Editor_Forms_AbstractI
 	/**
 	 * @var array
 	 */
-	protected $accounts;
+	protected $accounts = array();
 
 	/**
 	 * @var array
 	 */
-	protected $fields;
+	protected $fields = array();
 
 	/**
 	 * @var array
 	 */
-	protected $lists;
+	protected $lists = array();
 
 
 	/**

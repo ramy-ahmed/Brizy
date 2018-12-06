@@ -32,6 +32,10 @@ class Brizy_Editor_Forms_ServiceAccountManager {
 		}
 	}
 
+	public function getAllAccounts() {
+		return $this->accounts;
+	}
+
 	/**
 	 * @param $service
 	 * @param $accountId

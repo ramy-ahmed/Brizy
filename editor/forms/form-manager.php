@@ -33,6 +33,13 @@ class Brizy_Editor_Forms_FormManager {
 	}
 
 	/**
+	 * @return array|Brizy_Editor_Forms_Form[]
+	 */
+	public function getAllForms() {
+		return $this->forms;
+	}
+
+	/**
 	 * @param $form_id
 	 *
 	 * @return Brizy_Editor_Forms_Form

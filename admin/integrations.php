@@ -56,6 +56,10 @@ class Brizy_Admin_Integrations {
 		$this->twigEngine     = Brizy_TwigEngine::instance( BRIZY_PLUGIN_PATH . "/admin/views/integrations" );
 		$this->accountManager = new Brizy_Editor_Forms_ServiceAccountManager( $project );
 		$this->formManager    = new Brizy_Editor_Forms_FormManager( $project );
+
+//		foreach($this->formManager->getAllForms() as $form) {
+//			$this->formManager->deleteForm($form);
+//		}
 	}
 
 	public function actionRegisterIntegrationsPage() {
@@ -104,10 +108,17 @@ class Brizy_Admin_Integrations {
 			// delete accounts
 			foreach ( $_REQUEST['account'] as $serviceId => $accounts ) {
 				foreach ( $accounts as $accountId ) {
-					foreach ( $this->formManager->getAllForms() as $form ) {
-						foreach ( $form->getIntegrations() as $integration ) {
+					$forms = $this->formManager->getAllForms();
+					foreach ( $forms as $form ) {
+						$integrations = $form->getIntegrations();
+						foreach ( $integrations as $integration ) {
 							if ( $integration instanceof Brizy_Editor_Forms_ServiceIntegration && $integration->getUsedAccount() == $accountId ) {
 								$integration->setUsedAccount( null );
+								$integration->setCompleted( false );
+								$integration->setUsedList(null);
+								$integration->setLists(array());
+								$integration->setFields(array());
+								$integration->setFieldsMap(array());
 								$this->formManager->addForm( $form );
 							}
 						}

@@ -116,7 +116,7 @@ class Brizy_Editor_Forms_Form extends Brizy_Admin_Serializable {
 
 			$instance->addIntegration( $an_integration );
 
-			foreach ( (array)$json_obj->integrations as $integration ) {
+			foreach ( (array) $json_obj->integrations as $integration ) {
 				if ( is_object( $integration ) ) {
 					$instance->addIntegration( Brizy_Editor_Forms_AbstractIntegration::createInstanceFromJson( $integration ) );
 				}

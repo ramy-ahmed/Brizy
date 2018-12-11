@@ -40,7 +40,7 @@ class Brizy_Editor_Forms_ServiceAccountManager {
 	 * @param $service
 	 * @param $accountId
 	 *
-	 * @return Brizy_Editor_Forms_Account|null
+	 * @return Brizy_Editor_Forms_Account[]|null
 	 */
 	public function getAccounts( $service ) {
 

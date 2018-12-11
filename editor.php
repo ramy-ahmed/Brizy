@@ -234,12 +234,8 @@ class Brizy_Editor {
 			new Brizy_Admin_Capabilities( Brizy_Editor_Storage_Common::instance() );
 
 			if ( is_admin() ) {
-				$project = Brizy_Editor_Project::get();
-
 				Brizy_Admin_Main::instance();
 				Brizy_Admin_Settings::_init();
-				Brizy_Admin_Integrations::_init( $project );
-
 			}
 		} catch ( Exception $exception ) {
 			Brizy_Admin_Flash::instance()->add_error( 'Unable to empty the trash. Please try again later.' );

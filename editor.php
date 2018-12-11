@@ -181,6 +181,8 @@ class Brizy_Editor {
 	public function registerCustomPostTemplates() {
 		Brizy_Editor_Project::registerCustomPostType();
 		Brizy_Admin_Templates::registerCustomPostTemplate();
+
+
 	}
 
 	/**

@@ -113,46 +113,39 @@ var actions = {
     rule: {
         setType: function (value) {
             return function (state) {
-                console.log('setType');
                 return {type: value};
             };
         },
         setAppliedFor: function (value) {
             return function (state) {
-                console.log('setAppliedFor');
                 return {appliedFor: value};
             };
         },
         setEntityType: function (value) {
             return function (state) {
-                console.log('setEntityType');
                 return {entityType: value};
             };
         },
         setEntityValues: function (value) {
             return function (state) {
-                console.log('setEntityValues');
                 return {entityValues: value};
             };
         }
     },
+
     resetRule: function () {
         return function (state) {
             return {errors: "", rule: defaultRule};
-            //return deepmerge(state, {errors: '', rule: defaultRule}, {arrayMerge: arrayMerge});
         };
     },
     addFormErrors: function (errors) {
         return function (state) {
             return {errors: errors};
-            //return deepmerge(state, {errors: errors}, {arrayMerge: arrayMerge});
         };
     },
     setRuleList: function (rules) {
         return function (state) {
             return {rules: rules};
-            //var d = deepmerge(state, rules, {arrayMerge: arrayMerge});
-            //return d;
         };
     }
 };

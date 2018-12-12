@@ -44,7 +44,7 @@ class Brizy_Editor_Forms_ServiceAccountManager {
 	 */
 	public function getAccounts( $service ) {
 
-		if ( $this->accounts[ $service ] ) {
+		if ( isset($this->accounts[ $service ]) ) {
 			return array_values( $this->accounts[ $service ] );
 		}
 

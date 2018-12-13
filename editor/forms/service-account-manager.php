@@ -98,6 +98,9 @@ class Brizy_Editor_Forms_ServiceAccountManager {
 	 * @param Brizy_Editor_Forms_Account $account
 	 */
 	public function deleteAccount( $service, Brizy_Editor_Forms_Account $account ) {
+
+		throw new Exception('YOU TRIED TODELETE ACCOUNT :) :)');
+
 		unset( $this->accounts[ $service ][ $account->getId() ] );
 
 		$this->updateStorage();
@@ -108,6 +111,9 @@ class Brizy_Editor_Forms_ServiceAccountManager {
 	 * @param $accountId
 	 */
 	public function deleteAccountById( $service, $accountId ) {
+
+		throw new Exception('YOU TRIED TODELETE ACCOUNT :) :)');
+
 		unset( $this->accounts[ $service ][ $accountId ] );
 
 		$this->updateStorage();

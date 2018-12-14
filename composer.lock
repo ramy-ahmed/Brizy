@@ -54,17 +54,18 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:bagrinsergiu/Brizy-Forms-SDK.git",
-                "reference": "94d26fd1e427efba8e0f9906af531944bd3ebea9"
+                "reference": "12d2a9777c2f1a91e53546e0f9e005af91efcf77"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bagrinsergiu/Brizy-Forms-SDK/zipball/94d26fd1e427efba8e0f9906af531944bd3ebea9",
-                "reference": "94d26fd1e427efba8e0f9906af531944bd3ebea9",
+                "url": "https://api.github.com/repos/bagrinsergiu/Brizy-Forms-SDK/zipball/12d2a9777c2f1a91e53546e0f9e005af91efcf77",
+                "reference": "12d2a9777c2f1a91e53546e0f9e005af91efcf77",
                 "shasum": ""
             },
             "require": {
                 "activecampaign/api-php": "2.0.*",
                 "campaignmonitor/createsend-php": "dev-master",
+                "drewm/drip": "0.8.*",
                 "drewm/mailchimp-api": "~2.2",
                 "ext-curl": "*",
                 "ext-json": "*",
@@ -91,10 +92,10 @@
                 "forms"
             ],
             "support": {
-                "source": "https://github.com/bagrinsergiu/Brizy-Forms-SDK/tree/master",
+                "source": "https://github.com/bagrinsergiu/Brizy-Forms-SDK/tree/develop",
                 "issues": "https://github.com/bagrinsergiu/Brizy-Forms-SDK/issues"
             },
-            "time": "2018-12-04T13:13:42+00:00"
+            "time": "2018-12-14T09:19:24+00:00"
         },
         {
             "name": "campaignmonitor/createsend-php",
@@ -153,6 +154,48 @@
                 "monitor"
             ],
             "time": "2018-10-26T03:12:12+00:00"
+        },
+        {
+            "name": "drewm/drip",
+            "version": "v0.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/drewm/drip.git",
+                "reference": "2f5ebe46dbf82fe16186b8f488ec47a0dd672e37"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/drewm/drip/zipball/2f5ebe46dbf82fe16186b8f488ec47a0dd672e37",
+                "reference": "2f5ebe46dbf82fe16186b8f488ec47a0dd672e37",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.0.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DrewM\\Drip\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Drew McLellan",
+                    "email": "drew.mclellan@gmail.com"
+                }
+            ],
+            "description": "PHP library for interacting with the Drip API",
+            "keywords": [
+                "drip"
+            ],
+            "time": "2018-03-27T13:12:31+00:00"
         },
         {
             "name": "drewm/mailchimp-api",

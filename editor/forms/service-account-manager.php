@@ -149,7 +149,13 @@ class Brizy_Editor_Forms_ServiceAccountManager {
 			foreach ( $meta_value as $service => $accounts ) {
 				foreach ( $accounts as $account ) {
 					$account1 = Brizy_Editor_Forms_Account::createFromSerializedData( $account );
-					$this->addAccount( $service, $account1 );
+
+
+					if ( $this->hasAccount( $service, $account1 ) ) {
+						continue;
+					}
+
+					$this->accounts[ $service ][ $account1->getId() ] = $account1;
 				}
 			}
 		}

@@ -149,7 +149,7 @@ class Brizy_Editor_Forms_Api {
 
 	public function submit_form() {
 		try {
-			$manager        = new Brizy_Editor_Forms_FormManager( Brizy_Editor_Project::get() );
+			$manager = new Brizy_Editor_Forms_FormManager( Brizy_Editor_Project::get() );
 			/**
 			 * @var Brizy_Editor_FormsCompatibility fix_Form $form ;
 			 */
@@ -212,7 +212,7 @@ class Brizy_Editor_Forms_Api {
 						do_action( 'brizy_submit_form', $service, $form, $fields, $integration );
 					}
 				} catch ( Exception $e ) {
-					$this->error( 500, "Unable to create integration member." );
+					$this->error( 500, $e->getMessage() );
 				}
 			}
 

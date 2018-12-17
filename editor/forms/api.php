@@ -212,7 +212,7 @@ class Brizy_Editor_Forms_Api {
 						do_action( 'brizy_submit_form', $service, $form, $fields, $integration );
 					}
 				} catch ( Exception $e ) {
-					$this->error( 500, $e->getMessage() );
+					$this->error( 500, 'Member was not created.' );
 				}
 			}
 

@@ -54,12 +54,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:bagrinsergiu/Brizy-Forms-SDK.git",
-                "reference": "fe635dadada0fe36936dd2ab7243dbec78f6ee9b"
+                "reference": "ffeaa258c21e821ce746c86a2dc92f9d0c5d7e6b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bagrinsergiu/Brizy-Forms-SDK/zipball/fe635dadada0fe36936dd2ab7243dbec78f6ee9b",
-                "reference": "fe635dadada0fe36936dd2ab7243dbec78f6ee9b",
+                "url": "https://api.github.com/repos/bagrinsergiu/Brizy-Forms-SDK/zipball/ffeaa258c21e821ce746c86a2dc92f9d0c5d7e6b",
+                "reference": "ffeaa258c21e821ce746c86a2dc92f9d0c5d7e6b",
                 "shasum": ""
             },
             "require": {
@@ -95,7 +95,7 @@
                 "source": "https://github.com/bagrinsergiu/Brizy-Forms-SDK/tree/features",
                 "issues": "https://github.com/bagrinsergiu/Brizy-Forms-SDK/issues"
             },
-            "time": "2018-12-14T13:43:40+00:00"
+            "time": "2018-12-17T09:36:03+00:00"
         },
         {
             "name": "campaignmonitor/createsend-php",

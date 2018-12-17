@@ -17,11 +17,14 @@ trait Brizy_Editor_Forms_DynamicPropsAware  {
 	 * @param $arguments
 	 *
 	 * @return mixed|null
+	 * @throws Exception
 	 */
 	public function __call( $name, $arguments ) {
 
 		$method = substr( $name, 0, 3 );
 		$key    = substr( $name, 3 );
+
+		if(empty($key)) throw new Exception('Invalid key. You method must look like this: setKey();');
 
 		switch ( $method ) {
 			case 'set':
